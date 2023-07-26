@@ -38,10 +38,17 @@ jobs:
         sudo apt install libpangoxft-1.0-0
 
     - uses: actions/checkout@v3
-    - name: Build Debug
-      run: cargo build --verbose
-    - uses: actions/checkout@v3
     - name: Build Release
-      run: cargo build --release --verbose
+      run: cargo build --release
     - name: Run tests
       run: cargo test --verbose
+
+    - name: Automatic Releases
+      uses: marvinpinto/action-automatic-releases@v1.2.1
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        title: "Release Build"
+        prerelease: false
+        files: |
+            target/release/photoGrid
