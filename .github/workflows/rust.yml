@@ -23,6 +23,20 @@ jobs:
         sudo chmod +x /opt/cmake.sh 
         sudo /opt/cmake.sh --prefix=/usr/local/ --exclude-subdir
         sudo ln -s /opt/cmake*/bin/* /usr/local/bin/
+    - name: Install the rest of the dependencies
+      run: |
+        sudo apt install libwayland-client
+        sudo apt install libwayland-dev
+        sudo apt install libwayland-cursor
+        sudo apt install libxkbcommon-dev
+        sudo apt install libdbus-dev
+        sudo apt install libxinerama-dev
+        sudo apt install libxcursor-dev
+        sudo apt install libxfixes-dev
+        sudo apt install libxft-dev
+        sudo apt install libpango-dev
+        sudo apt install libpangox-dev
+
     - uses: actions/checkout@v3
     - name: Build Debug
       run: cargo build --verbose
