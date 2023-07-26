@@ -16,8 +16,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update Dependencies
-      run: bash -c \"apt remove cmake && curl -SL -o /opt/cmake.sh https://github.com/Kitware/CMake/releases/download/v3.27.1/cmake-3.27.1-linux-x86_64.sh && cd /opt && chmod +x cmake.sh && yes | ./cmake.sh && ln -s /opt/cmake*/bin/* /usr/local/bin/\"
+    - name: Remove old cmake
+      run: apt remove cmake
+    - name: Fetch cmake 3.27.1 install script and put it into /opt/cmake
+      run: curl -SL -o /opt/cmake.sh https://github.com/Kitware/CMake/releases/download/v3.27.1/cmake-3.27.1-linux-x86_64.sh 
+    - name: Make the cmake install script executable
+      run: chmod +x /opt/cmake.sh 
+    - name: Install Cmake from the script
+      run: /opt/cmake.sh --prefix=/usr/local/ --exclude-subdir
+    - name: Create symlinks to the binaries 
+      run: ln -s /opt/cmake*/bin/* /usr/local/bin/
     - uses: actions/checkout@v3
     - name: Build Debug
       run: cargo build --verbose
